@@ -1,33 +1,48 @@
-let fields = [null, 'circle', null, null, 'cross', null, null, null, null];
-
+let fields = [null, null, null, null, null, null, null, null, null];
+let currentShape = 'circle'; // abwechselnd zwischen 'circle' und 'cross'
 
 function init() {
     render();
 }
 
 function render() {
-  let html = "<table>";
+    let html = "<table>";
 
-  for (let i = 0; i < 3; i++) {
-    html += "<tr>";
-    for (let j = 0; j < 3; j++) {
-      let index = i * 3 + j;
-      let symbol = "";
+    for (let i = 0; i < 3; i++) {
+        html += "<tr>";
+        for (let j = 0; j < 3; j++) {
+            let index = i * 3 + j;
+            let symbol = "";
 
-      if (fields[index] === "circle") {
-        symbol = createAnimatedCircleSVG();
-      } else if (fields[index] === "cross") {
-        symbol = createAnimatedCrossSVG();
-      }
+            if (fields[index] === "circle") {
+                symbol = createAnimatedCircleSVG();
+            } else if (fields[index] === "cross") {
+                symbol = createAnimatedCrossSVG();
+            }
 
-      html += `<td>${symbol}</td>`;
+            html += `<td id="cell-${index}" onclick="handleClick(${index})">${symbol}</td>`;
+        }
+        html += "</tr>";
     }
-    html += "</tr>";
-  }
 
-  html += "</table>";
+    html += "</table>";
+    document.getElementById("content").innerHTML = html;
+}
 
-  document.getElementById("content").innerHTML = html;
+function handleClick(index) {
+    if (fields[index] !== null) return; // Feld bereits belegt
+
+    fields[index] = currentShape;
+
+    const cell = document.getElementById(`cell-${index}`);
+    if (currentShape === 'circle') {
+        cell.innerHTML = createAnimatedCircleSVG();
+    } else {
+        cell.innerHTML = createAnimatedCrossSVG();
+    }
+
+    cell.onclick = null; // Klick deaktivieren
+    currentShape = currentShape === 'circle' ? 'cross' : 'circle'; // ternary operator > short form of if/else > condition ? if_true : if_false
 }
 
 function createAnimatedCircleSVG() {
@@ -82,4 +97,3 @@ function createAnimatedCrossSVG() {
         </svg>
     `;
 }
-
