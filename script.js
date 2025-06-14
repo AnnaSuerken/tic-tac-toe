@@ -42,6 +42,11 @@ function handleClick(index) {
     }
 
     cell.onclick = null; // Klick deaktivieren
+    
+    if (checkWin()) {
+    return;
+    }
+
     currentShape = currentShape === 'circle' ? 'cross' : 'circle'; // ternary operator > short form of if/else > condition ? if_true : if_false
 }
 
@@ -96,4 +101,66 @@ function createAnimatedCrossSVG() {
             </line>
         </svg>
     `;
+}
+
+function checkWin() {
+    const winCombinations = [
+        [0, 1, 2], // Zeilen
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6], // Spalten
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8], // Diagonalen
+        [2, 4, 6],
+    ];
+
+     for (const [a, b, c] of winCombinations) {
+        if (fields[a] && fields[a] === fields[b] && fields[a] === fields[c]) {
+            drawWinningLine(a, c); // Linie vom ersten zum letzten Feld
+            for (let i = 0; i < 9; i++) {
+            document.getElementById(`cell-${i}`).onclick = null;
+}
+        }
+    }
+    return false; // kein Gewinn
+
+
+}
+
+
+function drawWinningLine(start, end) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    line.setAttribute("class", "win-line");
+    line.setAttribute("viewBox", "0 0 300 300");
+
+    const [x1, y1] = getCoordinates(start);
+    const [x2, y2] = getCoordinates(end);
+
+    const svgLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    svgLine.setAttribute("x1", x1);
+    svgLine.setAttribute("y1", y1);
+    svgLine.setAttribute("x2", x2);
+    svgLine.setAttribute("y2", y2);
+    svgLine.setAttribute("stroke", "white");
+    svgLine.setAttribute("stroke-width", "10");
+    svgLine.setAttribute("stroke-linecap", "round");
+
+    line.appendChild(svgLine);
+    document.getElementById("content").appendChild(line);
+}
+
+function getCoordinates(index) {
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+    return [col * 100 + 50, row * 100 + 50]; // Mittelpunkt der Zelle
+}
+
+function disableAllClicks() {
+    for (let i = 0; i < 9; i++) {
+        const cell = document.getElementById(`cell-${i}`);
+        if (cell) {
+            cell.onclick = null;
+        }
+    }
 }
