@@ -5,17 +5,22 @@ body {
   margin: 0;
 }
 
+#game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
 h1 {
   text-align: center;
 }
 
 #content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+
   position: relative;
-  width: 100%;
+
 }
 
 table {
@@ -72,4 +77,20 @@ svg.win-line {
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 10;
+}
+
+#reset-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #444;
+  color: white;
+  border: 2px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#reset-btn:hover {
+  background-color: #666;
 }

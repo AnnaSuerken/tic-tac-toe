@@ -153,7 +153,7 @@ function drawWinningLine(start, end) {
 function getCoordinates(index) {
     const row = Math.floor(index / 3);
     const col = index % 3;
-    return [col * 100 + 50, row * 100 + 50]; // Mittelpunkt der Zelle
+    return [col * 100 + 50, row * 100 + 50]; // Middle of cell
 }
 
 function disableAllClicks() {
@@ -163,4 +163,9 @@ function disableAllClicks() {
             cell.onclick = null;
         }
     }
+}
+
+function resetGame() {
+    fields = [null, null, null, null, null, null, null, null, null];
+    render();
 }
